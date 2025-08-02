@@ -1,0 +1,47 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+pillow==10.1.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+redis==5.0.1
+celery==5.3.4
+pytest==7.4.3
+httpx==0.25.2 
+
+#requirements.txt has all of the libraries necessary for the project to work 
+# Web Framework & Server
+    #1. main web framework for building APIs. Fast, modern, and easy to use
+    #2. Server that runs your FastAPI app.
+     
+# Database
+    #3. toolkit that lets you talk to database using Python classes instead of raaw SQL.
+    #4. Handles database migrations 
+    #5. package which is needed to connect python to a PostgreSQL database
+
+# Security & Authentication
+    #6. used for creating and verifying JWT tokens (for secure authentication)
+    #7. for hashing passwords securely (so you never store plain text passwords)
+
+# File Uploads & Images
+    #8. Lets FastAPI handle file uploads (like images)
+    #9. A library for working with images(resizing, converting, etc)
+
+# Data Validation & Settings
+    #10. Used by FastAPI to validate and serialize data (ensured data is the right type/format).
+    #11. Lets you manage app settings and environment variables 
+    #12. Loads environment variables from a .env file (like database passwords)
+
+# Background Tasks & Caching
+    #13. Lets your app connect to a Redis server (for caching, sessions, or background jobs).
+    #14. For running background tasks(like sending emails or processing images)
+
+#Testing & HTTP Requests
+    #15. Testing framework for Python
+    #16. Lets you make HTTP requests (like requests, but async friendly)
