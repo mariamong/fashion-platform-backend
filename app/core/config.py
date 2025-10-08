@@ -9,14 +9,14 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
     
-    # Database
-    DATABASE_URL: str = "postgresql://user:password@localhost/fashion_db"
+    # Database - Use environment variable, fallback to safe placeholder
+    DATABASE_URL: str = "postgresql://CHANGE_ME:CHANGE_ME@localhost/fashion_db"
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379"
     
-    # Security
-    SECRET_KEY: str = "your-secret-key-change-in-production"
+    # Security - Use environment variable, fallback to safe placeholder
+    SECRET_KEY: str = "CHANGE_THIS_IN_ENV_FILE_USE_RANDOM_STRING"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -41,4 +41,4 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 
-settings = Settings() 
+settings = Settings()
