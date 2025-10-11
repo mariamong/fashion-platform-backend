@@ -18,10 +18,10 @@ httpx==0.25.2
 #requirements.txt has all of the libraries necessary for the project to work 
 # Web Framework & Server
     #1. main web framework for building APIs. Fast, modern, and easy to use
-    #2. Server that runs your FastAPI app.
+    #2. Server that runs the FastAPI app.
      
 # Database
-    #3. toolkit that lets you talk to database using Python classes instead of raaw SQL.
+    #3. toolkit that lets talk to database using Python classes instead of raaw SQL.
     #4. Handles database migrations 
     #5. package which is needed to connect python to a PostgreSQL database
 
@@ -35,13 +35,13 @@ httpx==0.25.2
 
 # Data Validation & Settings
     #10. Used by FastAPI to validate and serialize data (ensured data is the right type/format).
-    #11. Lets you manage app settings and environment variables 
+    #11. allows to  manage app settings and environment variables 
     #12. Loads environment variables from a .env file (like database passwords)
 
 # Background Tasks & Caching
-    #13. Lets your app connect to a Redis server (for caching, sessions, or background jobs).
+    #13. Lets the app connect to a Redis server (for caching, sessions, or background jobs).
     #14. For running background tasks(like sending emails or processing images)
 
 #Testing & HTTP Requests
     #15. Testing framework for Python
-    #16. Lets you make HTTP requests (like requests, but async friendly)
+    #16. allows to make HTTP requests (like requests, but async friendly)
