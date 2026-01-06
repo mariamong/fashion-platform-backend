@@ -63,7 +63,7 @@ async def get_user_profile(
         user_followers.c.follower_id == user_id
     ).count()
     
-    posts_count = db.query(user.posts).count()
+    posts_count = len(user.posts)
     
     return UserProfile(
         **user.__dict__,

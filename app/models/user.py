@@ -37,10 +37,6 @@ class User(Base):
     
     # Notifications
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
-    
-    # User preferences
-    favorite_brands = relationship("UserBrand", back_populates="user", cascade="all, delete-orphan")
-    favorite_stores = relationship("UserStore", back_populates="user", cascade="all, delete-orphan")
 
 
 # User followers association table

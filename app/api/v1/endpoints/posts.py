@@ -1,13 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from sqlalchemy import and_, or_
 
 from app.core.database import get_db
 from app.models.user import User
-from app.models.post import Post, Comment, Like, Tag, PostTag
+from app.models.post import Post, Comment, Like, Tag, PostTag, ClothingCategory
 from app.schemas.post import PostCreate, PostUpdate, PostResponse, PostList, CommentCreate, CommentResponse, CommentList
 from app.api.v1.endpoints.auth import get_current_active_user
+from app.utils.file_upload import save_upload_file
 import json
 
 router = APIRouter()
@@ -63,6 +64,15 @@ async def get_posts(
         tags = [tag.tag.name for tag in post.tags]
         post_dict['tags'] = tags
         
+        # Parse additional_images JSON string
+        if post.additional_images:
+            try:
+                post_dict['additional_images'] = json.loads(post.additional_images)
+            except:
+                post_dict['additional_images'] = []
+        else:
+            post_dict['additional_images'] = []
+        
         post_responses.append(PostResponse(**post_dict))
     
     return PostList(
@@ -75,16 +85,58 @@ async def get_posts(
 
 @router.post("/", response_model=PostResponse)
 async def create_post(
-    post_data: PostCreate,
+    title: str = Form(...),
+    description: Optional[str] = Form(None),
+    category: ClothingCategory = Form(...),
+    brand: Optional[str] = Form(None),
+    price: Optional[float] = Form(None),
+    purchase_link: Optional[str] = Form(None),
+    store_name: Optional[str] = Form(None),
+    rating: Optional[float] = Form(None),
+    review: Optional[str] = Form(None),
+    is_public: bool = Form(True),
+    tags: Optional[str] = Form(None),  # JSON string or comma-separated
+    main_image: UploadFile = File(...),
+    additional_images: Optional[List[UploadFile]] = File(None),
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
-    """Create a new post"""
+    """Create a new post with image upload"""
+    # Save main image
+    main_image_path = save_upload_file(main_image, folder="posts")
+    
+    # Save additional images if provided
+    additional_image_paths = []
+    if additional_images:
+        for img in additional_images:
+            img_path = save_upload_file(img, folder="posts")
+            additional_image_paths.append(img_path)
+    
+    # Parse tags
+    tag_list = []
+    if tags:
+        try:
+            # Try parsing as JSON first
+            tag_list = json.loads(tags)
+        except:
+            # If not JSON, treat as comma-separated
+            tag_list = [t.strip() for t in tags.split(",") if t.strip()]
+    
     # Create post
     db_post = Post(
-        **post_data.dict(exclude={'tags', 'additional_images'}),
-        author_id=current_user.id,
-        additional_images=json.dumps(post_data.additional_images) if post_data.additional_images else None
+        title=title,
+        description=description,
+        category=category,
+        brand=brand,
+        price=price,
+        purchase_link=purchase_link,
+        store_name=store_name,
+        rating=rating,
+        review=review,
+        is_public=is_public,
+        main_image=main_image_path,
+        additional_images=json.dumps(additional_image_paths) if additional_image_paths else None,
+        author_id=current_user.id
     )
     
     db.add(db_post)
@@ -92,8 +144,8 @@ async def create_post(
     db.refresh(db_post)
     
     # Add tags if provided
-    if post_data.tags:
-        for tag_name in post_data.tags:
+    if tag_list:
+        for tag_name in tag_list:
             # Get or create tag
             tag = db.query(Tag).filter(Tag.name == tag_name).first()
             if not tag:
@@ -116,8 +168,13 @@ async def create_post(
         'username': db_post.author.username,
         'profile_picture': db_post.author.profile_picture
     }
-    post_dict['tags'] = post_data.tags or []
+    post_dict['tags'] = tag_list
     post_dict['is_liked'] = False
+    # Parse additional_images JSON string
+    if db_post.additional_images:
+        post_dict['additional_images'] = json.loads(db_post.additional_images)
+    else:
+        post_dict['additional_images'] = []
     
     return PostResponse(**post_dict)
 
@@ -157,6 +214,15 @@ async def get_post(
     # Get tags
     tags = [tag.tag.name for tag in post.tags]
     post_dict['tags'] = tags
+    
+    # Parse additional_images JSON string
+    if post.additional_images:
+        try:
+            post_dict['additional_images'] = json.loads(post.additional_images)
+        except:
+            post_dict['additional_images'] = []
+    else:
+        post_dict['additional_images'] = []
     
     return PostResponse(**post_dict)
 
@@ -220,6 +286,15 @@ async def update_post(
     }
     post_dict['tags'] = post_update.tags or []
     post_dict['is_liked'] = False
+    
+    # Parse additional_images JSON string
+    if post.additional_images:
+        try:
+            post_dict['additional_images'] = json.loads(post.additional_images)
+        except:
+            post_dict['additional_images'] = []
+    else:
+        post_dict['additional_images'] = []
     
     return PostResponse(**post_dict)
 

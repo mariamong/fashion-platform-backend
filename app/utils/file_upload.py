@@ -15,10 +15,6 @@ def save_upload_file(upload_file: UploadFile, folder: str = "uploads") -> str:
     if not is_valid_image(upload_file):
         raise HTTPException(status_code=400, detail="Invalid file type. Only images are allowed.")
     
-    # Validate file size
-    if upload_file.size and upload_file.size > settings.MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File too large. Maximum size is 10MB.")
-    
     # Create folder if it doesn't exist
     upload_folder = os.path.join(settings.UPLOAD_DIR, folder)
     os.makedirs(upload_folder, exist_ok=True)
@@ -28,16 +24,22 @@ def save_upload_file(upload_file: UploadFile, folder: str = "uploads") -> str:
     unique_filename = f"{uuid.uuid4()}{file_extension}"
     file_path = os.path.join(upload_folder, unique_filename)
     
-    # Save file
+    # Save file and check size
     try:
+        content = upload_file.file.read()
+        # Validate file size after reading
+        if len(content) > settings.MAX_FILE_SIZE:
+            raise HTTPException(status_code=400, detail="File too large. Maximum size is 10MB.")
+        
         with open(file_path, "wb") as buffer:
-            content = upload_file.file.read()
             buffer.write(content)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving file: {str(e)}")
     
-    # Return relative path for database storage
-    return f"/{folder}/{unique_filename}"
+    # Return relative path for database storage (matches StaticFiles mount)
+    return f"/uploads/{folder}/{unique_filename}"
 
 
 def is_valid_image(upload_file: UploadFile) -> bool:
