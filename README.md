@@ -2,11 +2,11 @@
 
 A modern backend API for a fashion social platform where users can share their clothing items, reviews, and discover new styles.
 
-## 🎯 Current Status: MVP Implementation
+## Current Status: MVP Implementation
 
 This is a focused MVP (Minimum Viable Product) implementation with core features that are **fully functional**. The codebase prioritizes working, tested features over ambitious scope.
 
-### ✅ Implemented Features (MVP)
+### Implemented Features (MVP)
 
 - **User Authentication** - JWT-based authentication with register, login, and token refresh
 - **User Profiles** - Get and update user profiles with follow/unfollow functionality
@@ -15,7 +15,7 @@ This is a focused MVP (Minimum Viable Product) implementation with core features
 - **Comments** - Add comments to posts and view post comments
 - **Image Upload** - Upload images for posts with validation
 
-### 🚧 Planned Features (Not Yet Implemented)
+###  Planned Features (Not Yet Implemented)
 
 The following features are planned but **not currently implemented**:
 - Outfits (creating outfit combinations)
@@ -25,7 +25,7 @@ The following features are planned but **not currently implemented**:
 - Real-time notifications
 - Background task processing (Celery)
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **FastAPI** - Modern, fast web framework for building APIs
 - **PostgreSQL** - Relational database
@@ -35,13 +35,13 @@ The following features are planned but **not currently implemented**:
 - **Pillow** - Image processing
 - **Pydantic** - Data validation
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Python 3.8+
 - PostgreSQL 12+
 - pip (Python package manager)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone and Setup
 
@@ -302,7 +302,7 @@ GET /api/v1/posts/{post_id}/comments?page=1&size=20
 Authorization: Bearer <access_token>
 ```
 
-## 🧪 Testing
+##  Testing
 
 Run tests:
 
@@ -316,7 +316,7 @@ Run tests with coverage:
 pytest --cov=app --cov-report=html
 ```
 
-## 📝 Database Migrations
+##  Database Migrations
 
 ### Create a new migration
 
@@ -336,7 +336,7 @@ alembic upgrade head
 alembic downgrade -1
 ```
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Database Connection Error
 
@@ -398,7 +398,7 @@ fashion-platform-backend/
 └── README.md
 ```
 
-## 🔒 Security Notes
+##  Security Notes
 
 - **Never commit `.env` file** - It contains sensitive credentials
 - Use strong, random `SECRET_KEY` in production
@@ -407,11 +407,11 @@ fashion-platform-backend/
 - Use HTTPS in production
 - Validate and sanitize all user inputs
 
-## 📄 License
+##  License
 
 MIT License - see LICENSE file for details
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -422,6 +422,4 @@ MIT License - see LICENSE file for details
 7. Push to the branch (`git push origin feature/amazing-feature`)
 8. Open a Pull Request
 
-## 📧 Contact
 
-For questions or issues, please open an issue on GitHub.
